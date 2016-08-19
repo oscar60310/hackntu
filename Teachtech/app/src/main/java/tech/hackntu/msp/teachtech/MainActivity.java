@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +44,23 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ListView listView = (ListView) findViewById(R.id.app_list);
+        //找到ListView
+
+        String[] values = new String[]{
+                "Line",
+                "Facebook",
+                "Twitter",
+                "LinkedIn"
+        };
+        //丟入你要顯示的文字
+
+        ListAdapter adapter = new ArrayAdapter<>(this , android.R.layout.simple_list_item_1 ,values);
+        //使用ListAdapter來顯示你輸入的文字
+
+        listView.setAdapter(adapter);
+        //將ListAdapter設定至ListView裡面
     }
 
     @Override
