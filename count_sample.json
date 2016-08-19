@@ -1,0 +1,13 @@
+{
+	"result":200,
+	"data":[
+		{
+			"app": "LINE",
+			"count": "1"
+		},
+		{
+			"app": "Facebook",
+			"count": "2"
+		}
+	]
+}
