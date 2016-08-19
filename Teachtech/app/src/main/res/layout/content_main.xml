@@ -16,7 +16,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:id="@+id/editText"
+        android:id="@+id/search_field"
         android:layout_weight="1"
         android:inputType="text"
         android:hint="@string/search_app_hint" />
