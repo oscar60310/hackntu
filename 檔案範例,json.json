@@ -1,0 +1,18 @@
+{
+	"app":"軟體名稱",
+	"version":"版本",
+	"creator":"作者名稱",
+	"step":[
+		{
+			"type":"touch || long touch || drag",
+			"area":{
+				"from_x":float,
+				"to_x": float,
+				"from_y":float,
+				"to_y":float
+			},
+			"hint":"說明文字"
+
+		}
+	]
+}
