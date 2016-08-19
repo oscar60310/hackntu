@@ -1,8 +1,10 @@
 package tech.hackntu.msp.teachtech;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,14 +18,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
+import data.callback;
+import data.web;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    public Activity mac;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mac = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -61,8 +70,21 @@ public class MainActivity extends AppCompatActivity
 
         listView.setAdapter(adapter);
         //將ListAdapter設定至ListView裡面
-    }
 
+        //發送GET查詢APP和數量
+        final web webget = new web(new callback.AsyncResponse() {
+            @Override
+            public void processFinish(JSONObject output) {
+                //回傳資料
+
+                new AlertDialog.Builder(mac).setMessage(output.toString()).show();
+
+            }
+        }
+        );
+        webget.execute("http://goofydog.me/jellyfish/hack/count_sample.json");
+    }
+    public interface AsyncResponse{void processFinish(JSONObject output);}
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -120,3 +142,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 }
+
