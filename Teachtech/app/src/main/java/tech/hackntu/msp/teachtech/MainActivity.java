@@ -67,7 +67,10 @@ public class MainActivity extends AppCompatActivity
 
     private Button.OnClickListener okcl = new Button.OnClickListener() {
         public void onClick(View v) {
-            // start cla
+            // start class
+            dialog_build.dismiss();
+            teacher teacher = new teacher(classroom,mac);
+            teacher.start_class();
         }
     };
 
@@ -161,6 +164,7 @@ public class MainActivity extends AppCompatActivity
 
         webget.execute("http://teachtechwithsql.azurewebsites.net/stepone.php");
     }
+    JSONObject classroom; // 用來儲存教學內容
     private ListView.OnItemClickListener confirm = new ListView.OnItemClickListener(){
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,7 +175,10 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void processFinish(JSONObject output) {
                     //回傳資料
+                    classroom = output;
 
+
+                    //
                     LayoutInflater inflater = mac.getLayoutInflater();
                     dialog_build = new AlertDialog.Builder(MainActivity.this)
                             .setView(inflater.inflate(R.layout.activity_custom_dialog,null)).show();

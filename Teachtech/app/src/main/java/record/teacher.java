@@ -122,10 +122,14 @@ public class teacher
             Log.d("error",e.toString());
         }
 
+        scr = new smartClassroom(book,main);
+        scr.start_checking();
+
         currect_step = 0;
         nextstep();
     }
     int currect_step;
+    smartClassroom scr;
     void nextstep()
     {
         windowManager.removeView(arrow);
