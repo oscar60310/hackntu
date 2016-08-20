@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity
         // init lv2
         count_list2 = new ArrayList<>();
         adapter2 = new SimpleAdapter(this, count_list2, R.layout.list_items,
-                new String[] { "id", "name" }, new int[] {
+                new String[] { "name", "id" }, new int[] {
                 R.id.app, R.id.count });
         lv2 = (ListView) findViewById(R.id.app_list2);
         lv2.setAdapter(adapter2);
@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity
         lv2.setOnItemClickListener(confirm);
         showConnecting();
         webget.execute("http://teachtechgogo.azurewebsites.net/stepone.php");
+       // webget.execute("http://goofydog.me/jellyfish/hack/step1.json");
     }
     void showConnecting()
     {
@@ -224,8 +225,17 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             );
+            try
+            {
+                JSONArray arr = (JSONArray)count_data2.get("data");
 
-            webget.execute("http://goofydog.me/jellyfish/hack/FB.json");
+                webget.execute(((JSONObject)arr.get(position)).get("url")+"");
+            }
+            catch (Exception e)
+            {
+
+            }
+
 
 
 
@@ -263,7 +273,10 @@ public class MainActivity extends AppCompatActivity
             );
             try {
                 JSONArray details = (JSONArray)count_data.get("data");
-                webget.execute("http://teachtechwithsql.azurewebsites.net/steptwo.php?app="+((JSONObject)details.get(position)).get("app"));
+                //webget.execute("http://teachtechwithsql.azurewebsites.net/steptwo.php?app="+((JSONObject)details.get(position)).get("app"));
+
+                webget.execute("http://goofydog.me/jellyfish/hack/step2_"+((JSONObject)details.get(position)).get("app")+".json");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -275,6 +288,8 @@ public class MainActivity extends AppCompatActivity
     {
         if(item_clicked == true) return;
         count_list.clear();
+
+
         if(filter == "")
         {
             //No filter
@@ -312,7 +327,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         Map<String, Object> map = new HashMap<>();
                         map.put("app", ((JSONObject)datas.get(i)).get("app"));
-                        map.put("count", ((JSONObject)datas.get(i)).get("counter"));
+                        map.put("count", ((JSONObject)datas.get(i)).get("count"));
                         count_list.add(map);
 
                     }
@@ -343,7 +358,7 @@ public class MainActivity extends AppCompatActivity
             for(int i=0;i<datas.length();i++)
             {
                 Map<String, Object> map = new HashMap<>();
-                map.put("id", ((JSONObject)datas.get(i)).get("id"));
+                map.put("id", "");
                 map.put("name", ((JSONObject)datas.get(i)).get("name"));
                 count_list2.add(map);
             }
