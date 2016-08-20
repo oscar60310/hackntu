@@ -38,6 +38,7 @@ import java.util.Objects;
 
 import data.callback;
 import data.web;
+import record.teacher;
 import record.testrecord;
 
 public class MainActivity extends AppCompatActivity
@@ -45,8 +46,13 @@ public class MainActivity extends AppCompatActivity
 
 
     public Activity mac;
-    private Intent intent;
+
     private JSONObject count_data;
+    private List<Map<String, Object>> count_list;
+    private SimpleAdapter adapter;
+    ListView lv;
+    Boolean item_clicked = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,22 +116,26 @@ public class MainActivity extends AppCompatActivity
         adapter = new SimpleAdapter(this, count_list, R.layout.list_items,
                 new String[] { "app", "count" }, new int[] {
                 R.id.app, R.id.count });
-
-        ListView lv = (ListView) findViewById(R.id.app_list);
+        lv = (ListView) findViewById(R.id.app_list);
         lv.setAdapter(adapter);
-        lv.setItemsCanFocus(false);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("d",i+"");
-            }
-        });
+        // set listview setOnItemClickListener
+        lv.setOnItemClickListener(detail);
         webget.execute("http://teachtechwithsql.azurewebsites.net/json.php");
     }
+    // listview setOnItemClickListener
+    private ListView.OnItemClickListener detail = new ListView.OnItemClickListener(){
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            item_clicked = true;
+         //   Log.d("d","clickedededed");
+            lv.setVisibility(View.GONE);
+        }
+    };
+
     //當使用者輸入搜尋，篩選資料
     void update_list(String filter,JSONObject data)
     {
-
+        if(item_clicked == true) return;
         count_list.clear();
         if(filter == "")
         {
@@ -180,8 +190,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("list",count_list.size()+"");
         adapter.notifyDataSetChanged();
     }
-    private List<Map<String, Object>> count_list;
-    private SimpleAdapter adapter;
+
 
 
     public interface AsyncResponse{void processFinish(JSONObject output);}
@@ -215,7 +224,20 @@ public class MainActivity extends AppCompatActivity
         }
         else if(id == R.id.action_test_teach)
         {
-            
+
+            final web webget = new web(new callback.AsyncResponse() {
+                @Override
+                public void processFinish(JSONObject output) {
+                    //回傳資料
+
+                    teacher testclass = new teacher(output,mac);
+                    testclass.start_class();
+                    //new AlertDialog.Builder(mac).setMessage(output.toString()).show();
+
+                }
+            }
+            );
+            webget.execute("http://goofydog.me/jellyfish/hack/LINE.json");
             return true;
         }
 

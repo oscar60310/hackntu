@@ -10,17 +10,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/app"
-        android:textSize="28dp"
-        android:textIsSelectable="true"
+        android:textSize="24dp"
+        android:textIsSelectable="false"
         android:gravity="right">
     </TextView>
 
     <TextView android:text="TextView"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:id="@+id/count"
-        android:textSize="28dp"
-        android:gravity="right">
+        android:textSize="24dp"
+        android:gravity="right"
+        android:textIsSelectable="false">
     </TextView>
 
 </LinearLayout>
