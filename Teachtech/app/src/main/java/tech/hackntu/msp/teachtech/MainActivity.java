@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -59,6 +61,21 @@ public class MainActivity extends AppCompatActivity
     ListView lv2;
     Boolean item_clicked = false;
     Boolean item_clicked2 = false;
+    Button okBtn;
+    Button cancelBtn;
+    AlertDialog dialog_build;
+
+    private Button.OnClickListener okcl = new Button.OnClickListener() {
+        public void onClick(View v) {
+            // start cla
+        }
+    };
+
+    private Button.OnClickListener cancelcl = new Button.OnClickListener() {
+        public void onClick(View v) {
+            dialog_build.dismiss();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,13 +164,31 @@ public class MainActivity extends AppCompatActivity
     private ListView.OnItemClickListener confirm = new ListView.OnItemClickListener(){
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(MainActivity.this,CustomDialogActivity.class);
-            try {
-                Thread.sleep(100);
-                startActivity(intent);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+            //web
+            //發送GET查詢 詳細資訊
+            final web webget = new web(new callback.AsyncResponse() {
+                @Override
+                public void processFinish(JSONObject output) {
+                    //回傳資料
+
+                    LayoutInflater inflater = mac.getLayoutInflater();
+                    dialog_build = new AlertDialog.Builder(MainActivity.this)
+                            .setView(inflater.inflate(R.layout.activity_custom_dialog,null)).show();
+
+                    okBtn = (Button)dialog_build.findViewById(R.id.btn_confirm);
+                    okBtn.setOnClickListener(okcl);
+                    cancelBtn = (Button)dialog_build.findViewById(R.id.btn_cancel);
+                    cancelBtn.setOnClickListener(cancelcl);
+
+                }
             }
+            );
+
+            webget.execute("http://goofydog.me/jellyfish/hack/LINE.json");
+
+
+
 
         }
     };

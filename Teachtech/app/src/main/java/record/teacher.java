@@ -1,12 +1,15 @@
 package record;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.renderscript.Double2;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -132,8 +136,12 @@ public class teacher
             if(currect_step >= books.length()){
                 Log.d("end","class end");
                 // well done and go back
-
                 destory();
+
+                Intent intent = main.getPackageManager().getLaunchIntentForPackage(main.getPackageName());
+                main.startActivity(intent); main.finish();
+
+
             }
             else {
                 getposition((JSONObject) (books.get(currect_step)));
