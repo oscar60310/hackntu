@@ -129,6 +129,16 @@ public class MainActivity extends AppCompatActivity
             item_clicked = true;
          //   Log.d("d","clickedededed");
             lv.setVisibility(View.GONE);
+            final web webget = new web(new callback.AsyncResponse() {
+                @Override
+                public void processFinish(JSONObject output) {
+                    //回傳資料 step 2 資料
+                    
+
+                }
+            }
+            );
+            webget.execute("http://goofydog.me/jellyfish/hack/step2.json");
         }
     };
 
