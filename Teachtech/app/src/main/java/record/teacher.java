@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Handler;
+import android.renderscript.Double2;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,7 +43,8 @@ public class teacher
     }
     WindowManager windowManager;
     ImageView arrow,next_btn;
-    WindowManager.LayoutParams params;
+    View tips;
+    WindowManager.LayoutParams params,tips_params;
     public void start_class()
     {
 
@@ -64,8 +68,7 @@ public class teacher
 
         windowManager.addView(arrow, params);
     //    arrow.setVisibility(View.GONE);
-        currect_step = 0;
-        nextstep();
+
        // arrow.getLayoutParams().width = 50;
        // arrow.getLayoutParams().height = 50;
 
@@ -85,6 +88,18 @@ public class teacher
         btn_params.y = screen_y -300 ;
 
         windowManager.addView(next_btn, btn_params);
+
+        tips = LayoutInflater.from(main).inflate(R.layout.hints, null);
+        tips.setAlpha((float)0.8);
+        tips_params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+        tips_params.gravity = Gravity.TOP | Gravity.LEFT;
+        windowManager.addView(tips,tips_params);
+
        // next_btn.setBackground(main.getDrawable(R.color.colorPrimary));
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,18 +117,27 @@ public class teacher
         {
             Log.d("error",e.toString());
         }
+
+        currect_step = 0;
+        nextstep();
     }
     int currect_step;
     void nextstep()
     {
         windowManager.removeView(arrow);
+        windowManager.removeView(tips);
         try
         {
             JSONArray books = (JSONArray)book.get("step");
-            if(currect_step >= books.length()) return;
+            if(currect_step >= books.length()){
+                Log.d("end","class end");
+                // well done and go back
+
+                destory();
+            }
             else {
-                position p = getposition((JSONObject) (books.get(currect_step)));
-                arrow_appear(p);
+                getposition((JSONObject) (books.get(currect_step)));
+
                 currect_step++;
             }
         }
@@ -123,7 +147,7 @@ public class teacher
 
     }
 
-    position getposition(JSONObject stepData)
+    void getposition(JSONObject stepData)
     {
         try
         {
@@ -131,32 +155,43 @@ public class teacher
             JSONObject area = (JSONObject)stepData.get("area");
             fx = (Double)area.get("from_x");
             tx = (Double)area.get("to_x");
-          //  fy = (Double)area.get("from_y");
+            fy = (Double)area.get("from_y");
             ty = (Double)area.get("to_y");
             position p = new position();
-            p.x = Float.parseFloat(Double.toString((fx+tx)/2)) -30;
-            p.y = Float.parseFloat(Double.toString(ty)) +15;
-            return p;
+            p.x = Float.parseFloat(Double.toString(fx));
+            p.y = Float.parseFloat(Double.toString(ty));
+            arrow_appear(p,Math.round(Float.parseFloat(Double.toString(tx - fx))));
+            tips_appear(p,stepData.get("hint")+"");
+            //return p;
 
         }
         catch (Exception e)
         {
             Log.d("error",e.toString());
-            return null;
+            // return null;
         }
 
 
     }
-    private void arrow_appear(position p)
+    private void arrow_appear(position p,int wid)
     {
 
         params.x = Math.round(p.x);
-        params.y = Math.round(p.y);
+        params.y = Math.round(p.y) ;
         windowManager.addView(arrow, params);
-       // arrow.setImageBitmap(bf.getLine(100).b);
+        Log.d("d",wid+"");
+        arrow.setImageBitmap(bf.getLine(wid));
       //  arrow.setX(p.x);
      //   arrow.setY(p.y);
       //  arrow.setVisibility(View.VISIBLE);
+
+    }
+    void tips_appear(position p,String msg)
+    {
+        tips_params.x = Math.round(p.x);
+        tips_params.y = Math.round(p.y) + 40 ;
+        windowManager.addView(tips, tips_params);
+        ((TextView)tips.findViewById(R.id.hint_text)).setText(msg);
 
     }
     public void destory()
@@ -164,6 +199,7 @@ public class teacher
 
         windowManager.removeView(arrow);
         windowManager.removeView(next_btn);
+        windowManager.removeView(tips);
     }
 }
 class position {

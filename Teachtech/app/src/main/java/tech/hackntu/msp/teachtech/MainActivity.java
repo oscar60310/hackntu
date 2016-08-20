@@ -28,6 +28,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
         // init lv2
         count_list2 = new ArrayList<>();
-        adapter2 = new SimpleAdapter(this, count_list, R.layout.list_items,
+        adapter2 = new SimpleAdapter(this, count_list2, R.layout.list_items,
                 new String[] { "id", "name" }, new int[] {
                 R.id.app, R.id.count });
         lv2 = (ListView) findViewById(R.id.app_list2);
@@ -146,7 +147,13 @@ public class MainActivity extends AppCompatActivity
     private ListView.OnItemClickListener confirm = new ListView.OnItemClickListener(){
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            Intent intent = new Intent(MainActivity.this,CustomDialogActivity.class);
+            try {
+                Thread.sleep(100);
+                startActivity(intent);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
     };
@@ -154,10 +161,10 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        if(testclass!=null)
+       /* if(testclass!=null)
         {
             testclass.destory();
-        }
+        }*/
 
     }
 
@@ -173,12 +180,18 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void processFinish(JSONObject output) {
                     //回傳資料 step 2 資料
-
+                    count_data2 = output;
+                    update_list_step2(output);
 
                 }
             }
             );
-            webget.execute("http://goofydog.me/jellyfish/hack/steptwo.php");
+            try {
+                JSONArray details = (JSONArray)count_data.get("data");
+                webget.execute("http://teachtechwithsql.azurewebsites.net/steptwo.php?app="+((JSONObject)details.get(position)).get("app"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 
