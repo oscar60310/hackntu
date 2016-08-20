@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ import java.util.Objects;
 
 import data.callback;
 import data.web;
+import record.testrecord;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,8 +60,10 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+              //  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+             //           .setAction("Action", null).show();
+                testrecord td = new testrecord(mac);
+                td.testMod();
             }
         });
 
@@ -106,10 +110,17 @@ public class MainActivity extends AppCompatActivity
         adapter = new SimpleAdapter(this, count_list, R.layout.list_items,
                 new String[] { "app", "count" }, new int[] {
                 R.id.app, R.id.count });
+
         ListView lv = (ListView) findViewById(R.id.app_list);
         lv.setAdapter(adapter);
-
-        webget.execute("http://goofydog.me/jellyfish/hack/count_sample.json");
+        lv.setItemsCanFocus(false);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("d",i+"");
+            }
+        });
+        webget.execute("http://teachtechwithsql.azurewebsites.net/json.php");
     }
     //當使用者輸入搜尋，篩選資料
     void update_list(String filter,JSONObject data)
@@ -127,7 +138,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     Map<String, Object> map = new HashMap<>();
                     map.put("app", ((JSONObject)datas.get(i)).get("app"));
-                    map.put("count", ((JSONObject)datas.get(i)).get("count"));
+                    map.put("count", ((JSONObject)datas.get(i)).get("counter"));
                     count_list.add(map);
                 }
             }
@@ -153,7 +164,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         Map<String, Object> map = new HashMap<>();
                         map.put("app", ((JSONObject)datas.get(i)).get("app"));
-                        map.put("count", ((JSONObject)datas.get(i)).get("count"));
+                        map.put("count", ((JSONObject)datas.get(i)).get("counter"));
                         count_list.add(map);
 
                     }
@@ -200,6 +211,11 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        else if(id == R.id.action_test_teach)
+        {
+            
             return true;
         }
 

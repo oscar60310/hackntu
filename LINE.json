@@ -1,0 +1,45 @@
+{
+	"app":"LINE",
+	"version":"1",
+	"creator":"test",
+	"step":[
+		{
+			"type":"touch",
+			"area":{
+				"from_x":675.18,
+				"to_x": 743,
+				"from_y": 18,
+				"to_y": 101
+			},
+			"hint":"點擊右上角按鈕"
+		},{
+			"type":"touch",
+			"area":{
+				"from_x":848,
+				"to_x": 1056,
+				"from_y": 147,
+				"to_y": 344
+			},
+			"hint":"選擇ID/電話號碼"
+		},{
+			"type":"none",
+			"area":{
+				"from_x":60,
+				"to_x": 1048,
+				"from_y": 513,
+				"to_y": 617
+			},
+			"hint":"輸入ID: skyand55"
+		},{
+			"type":"touch",
+			"area":{
+				"from_x":310,
+				"to_x": 803,
+				"from_y": 1132,
+				"to_y": 1240
+			},
+			"hint":"按下加入"
+		}
+
+	]
+}
