@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -48,7 +49,6 @@ import record.testrecord;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
     public Activity mac;
 
     private JSONObject count_data;
@@ -63,8 +63,14 @@ public class MainActivity extends AppCompatActivity
     Boolean item_clicked2 = false;
     Button okBtn;
     Button cancelBtn;
+    Button exitBtn;
     AlertDialog dialog_build;
-
+    TextView textTitle, textContent;
+    private Button.OnClickListener exitcl = new Button.OnClickListener() {
+        public void onClick(View v) {
+            dialog_build.dismiss();
+        }
+    };
     private Button.OnClickListener okcl = new Button.OnClickListener() {
         public void onClick(View v) {
             // start class
@@ -79,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             dialog_build.dismiss();
         }
     };
-
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +117,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
 
         ((EditText)findViewById(R.id.search_field)).addTextChangedListener(new TextWatcher() {
             @Override
@@ -161,8 +170,13 @@ public class MainActivity extends AppCompatActivity
         lv2.setAdapter(adapter2);
         // set listview setOnItemClickListener
         lv2.setOnItemClickListener(confirm);
-
-        webget.execute("http://teachtechwithsql.azurewebsites.net/stepone.php");
+        showConnecting();
+        webget.execute("http://teachtechgogo.azurewebsites.net/stepone.php");
+    }
+    void showConnecting()
+    {
+        Snackbar.make(fab, "網路連線中", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
     JSONObject classroom; // 用來儲存教學內容
     private ListView.OnItemClickListener confirm = new ListView.OnItemClickListener(){
@@ -176,9 +190,6 @@ public class MainActivity extends AppCompatActivity
                 public void processFinish(JSONObject output) {
                     //回傳資料
                     classroom = output;
-
-
-                    //
                     LayoutInflater inflater = mac.getLayoutInflater();
                     dialog_build = new AlertDialog.Builder(MainActivity.this)
                             .setView(inflater.inflate(R.layout.activity_custom_dialog,null)).show();
@@ -187,12 +198,34 @@ public class MainActivity extends AppCompatActivity
                     okBtn.setOnClickListener(okcl);
                     cancelBtn = (Button)dialog_build.findViewById(R.id.btn_cancel);
                     cancelBtn.setOnClickListener(cancelcl);
+                    exitBtn = (Button)dialog_build.findViewById(R.id.text_close);
+                    exitBtn.setOnClickListener(exitcl);
 
+                    String title = new String();
+                    String name = new String();
+                    String creator = new String();
+                    String about = new String();
+                    try{
+
+                        title = output.get("app").toString();
+                        name = output.get("name").toString();
+                        creator = output.get("creator").toString();
+                        about = output.get("about").toString();
+                        //Log.d("apppppp",title);
+                        textTitle = (TextView) dialog_build.findViewById(R.id.text_title);//text_content
+                        textTitle.setText(title + " - " + name);
+                        textContent = (TextView) dialog_build.findViewById(R.id.text_content);//text_content
+                        textContent.setText("作者：" + creator + "\n說明：" + about);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d("e",e.toString());
+                    }
                 }
             }
             );
 
-            webget.execute("http://goofydog.me/jellyfish/hack/LINE.json");
+            webget.execute("http://goofydog.me/jellyfish/hack/FB.json");
 
 
 
@@ -253,7 +286,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     Map<String, Object> map = new HashMap<>();
                     map.put("app", ((JSONObject)datas.get(i)).get("app"));
-                    map.put("count", ((JSONObject)datas.get(i)).get("counter"));
+                    map.put("count", ((JSONObject)datas.get(i)).get("count"));
                     count_list.add(map);
                 }
             }

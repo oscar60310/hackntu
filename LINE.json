@@ -1,9 +1,10 @@
 {
 	"app":"LINE",
+	"name": "加好友",
 	"package":"jp.naver.line.android",
 	"about":"教你加LINE的好友",
 	"version":"1",
-	"creator":"test",
+	"creator":"何天與",
 	"step":[
 		{
 			"type":"touch",

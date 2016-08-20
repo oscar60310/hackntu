@@ -1,0 +1,70 @@
+{
+	"app":"Facebook",
+	"name": "換大頭照",
+	"package":"com.facebook.katana",
+	"about":"快速讓你跟上潮流",
+	"version":"1",
+	"creator":"何天與",
+	"step":[
+		{
+			"type":"touch",
+			"area":{
+				"from_x":891.0,
+				"to_x": 1041.0,
+				"from_y": 131.0,
+				"to_y": 260.0
+			},
+			"hint":"點擊右上角符號"
+		},	{
+			"type":"touch",
+			"area":{
+				"from_x":54.0,
+				"to_x": 1069.0,
+				"from_y": 316.0,
+				"to_y": 437.0
+			},
+			"hint":"點選自己的名子，進入個人檔案"
+		},	{
+			"type":"touch",
+			"area":{
+				"from_x":375.0,
+				"to_x": 728.0,
+				"from_y": 452.0,
+				"to_y": 807.0
+			},
+			"hint":"點選自己的頭像"
+		},	{
+			"type":"touch",
+			"area":{
+				"from_x":361.0,
+				"to_x": 1000.0,
+				"from_y": 751.0,
+				"to_y": 878.0
+			},
+			"hint":"點選選擇大頭貼"
+		},	{
+			"type":"touch",
+			"area":{
+				"from_x":36.0,
+				"to_x": 1076.0,
+				"from_y": 271.0,
+				"to_y": 800.0
+			},
+			"hint":"選擇一張好看的照片當作你的大頭貼"
+		},	{
+			"type":"touch",
+			"area":{
+				"from_x":905.0,
+				"to_x": 1063.0,
+				"from_y": 16.0,
+				"to_y": 126.0
+			},
+			"hint":"點擊使用"
+		}
+		
+		
+		
+		
+
+	]
+}

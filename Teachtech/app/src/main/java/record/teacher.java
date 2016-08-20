@@ -111,7 +111,12 @@ public class teacher
                 nextstep();
             }
         });
-
+        next_btn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
         try {
             //開啟APP
             Intent intent = main.getPackageManager().getLaunchIntentForPackage(book.get("package") + "");
@@ -122,14 +127,14 @@ public class teacher
             Log.d("error",e.toString());
         }
 
-        scr = new smartClassroom(book,main);
-        scr.start_checking();
+     //   scr = new smartClassroom(book,main);
+       // scr.start_checking();
 
         currect_step = 0;
         nextstep();
     }
     int currect_step;
-    smartClassroom scr;
+   // smartClassroom scr;
     void nextstep()
     {
         windowManager.removeView(arrow);
