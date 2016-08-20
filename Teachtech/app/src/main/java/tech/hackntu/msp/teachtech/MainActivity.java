@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import data.callback;
 import data.web;
@@ -48,16 +49,24 @@ public class MainActivity extends AppCompatActivity
     public Activity mac;
 
     private JSONObject count_data;
+    private JSONObject count_data2;
     private List<Map<String, Object>> count_list;
     private SimpleAdapter adapter;
+    private List<Map<String, Object>> count_list2;
+    private SimpleAdapter adapter2;
     ListView lv;
+    ListView lv2;
     Boolean item_clicked = false;
-
+    Boolean item_clicked2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+          //  final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+           // Log.d("uuid",uuid);
+
         mac = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,8 +129,39 @@ public class MainActivity extends AppCompatActivity
         lv.setAdapter(adapter);
         // set listview setOnItemClickListener
         lv.setOnItemClickListener(detail);
-        webget.execute("http://teachtechwithsql.azurewebsites.net/json.php");
+
+
+        // init lv2
+        count_list2 = new ArrayList<>();
+        adapter2 = new SimpleAdapter(this, count_list, R.layout.list_items,
+                new String[] { "id", "name" }, new int[] {
+                R.id.app, R.id.count });
+        lv2 = (ListView) findViewById(R.id.app_list2);
+        lv2.setAdapter(adapter2);
+        // set listview setOnItemClickListener
+        lv2.setOnItemClickListener(confirm);
+
+        webget.execute("http://teachtechwithsql.azurewebsites.net/stepone.php");
     }
+    private ListView.OnItemClickListener confirm = new ListView.OnItemClickListener(){
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+        }
+    };
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if(testclass!=null)
+        {
+            testclass.destory();
+        }
+
+    }
+
+
     // listview setOnItemClickListener
     private ListView.OnItemClickListener detail = new ListView.OnItemClickListener(){
         @Override
@@ -133,12 +173,12 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void processFinish(JSONObject output) {
                     //回傳資料 step 2 資料
-                    
+
 
                 }
             }
             );
-            webget.execute("http://goofydog.me/jellyfish/hack/step2.json");
+            webget.execute("http://goofydog.me/jellyfish/hack/steptwo.php");
         }
     };
 
@@ -202,6 +242,33 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    // step2 列出資料
+    void update_list_step2(JSONObject data)
+    {
+        //if(item_clicked2 == true) return;
+        count_list2.clear();
+
+        try
+        {
+            JSONArray datas = (JSONArray)data.get("data");
+
+            for(int i=0;i<datas.length();i++)
+            {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", ((JSONObject)datas.get(i)).get("id"));
+                map.put("name", ((JSONObject)datas.get(i)).get("name"));
+                count_list2.add(map);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d("e",e.toString());
+        }
+
+        /// 給資料更新LIST
+        Log.d("list",count_list2.size()+"");
+        adapter2.notifyDataSetChanged();
+    }
 
     public interface AsyncResponse{void processFinish(JSONObject output);}
     @Override
@@ -240,7 +307,7 @@ public class MainActivity extends AppCompatActivity
                 public void processFinish(JSONObject output) {
                     //回傳資料
 
-                    teacher testclass = new teacher(output,mac);
+                    testclass = new teacher(output,mac);
                     testclass.start_class();
                     //new AlertDialog.Builder(mac).setMessage(output.toString()).show();
 
@@ -253,7 +320,7 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    teacher testclass;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -278,5 +345,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
 

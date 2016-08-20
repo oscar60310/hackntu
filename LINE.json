@@ -1,5 +1,6 @@
 {
 	"app":"LINE",
+	"package":"jp.naver.line.android",
 	"version":"1",
 	"creator":"test",
 	"step":[
@@ -24,19 +25,28 @@
 		},{
 			"type":"none",
 			"area":{
-				"from_x":60.0,
-				"to_x": 1048.0,
-				"from_y": 513.0,
-				"to_y": 617.0
+				"from_x":89.0,
+				"to_x": 1019.0,
+				"from_y": 389.0,
+				"to_y": 449.0
 			},
 			"hint":"輸入ID: skyand55"
 		},{
 			"type":"touch",
 			"area":{
-				"from_x":310.0,
+				"from_x":929.0,
+				"to_x": 1020.0,
+				"from_y": 350.0,
+				"to_y": 464.0
+			},
+			"hint":"按下查詢符號"
+		},{
+			"type":"touch",
+			"area":{
+				"from_x":300.0,
 				"to_x": 803.0,
 				"from_y": 1132.0,
-				"to_y": 1240.0
+				"to_y": 1270.0
 			},
 			"hint":"按下加入"
 		}
