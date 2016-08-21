@@ -3,10 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:focusable="false">
+    android:focusable="false"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_check"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
     <TextView android:text="@string/textview"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/app"
         android:textSize="24sp"
@@ -17,12 +26,13 @@
 
     <TextView android:text="@string/textview"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:id="@+id/count"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:gravity="right"
         android:textIsSelectable="false"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:textColor="#979292">
     </TextView>
 
 </LinearLayout>

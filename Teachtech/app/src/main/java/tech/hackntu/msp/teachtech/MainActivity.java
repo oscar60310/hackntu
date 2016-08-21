@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 import data.callback;
@@ -104,8 +106,8 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
               //  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
              //           .setAction("Action", null).show();
-                testrecord td = new testrecord(mac);
-                td.testMod();
+              //  testrecord td = new testrecord(mac);
+                //td.testMod();
             }
         });
 
@@ -153,8 +155,9 @@ public class MainActivity extends AppCompatActivity
         // init listview
         count_list = new ArrayList<>();
         adapter = new SimpleAdapter(this, count_list, R.layout.list_items,
-                new String[] { "app", "count" }, new int[] {
-                R.id.app, R.id.count });
+                new String[] { "check", "app", "count" }, new int[] {
+                R.id.list_check, R.id.app, R.id.count });
+
         lv = (ListView) findViewById(R.id.app_list);
         lv.setAdapter(adapter);
         // set listview setOnItemClickListener
@@ -164,7 +167,7 @@ public class MainActivity extends AppCompatActivity
         // init lv2
         count_list2 = new ArrayList<>();
         adapter2 = new SimpleAdapter(this, count_list2, R.layout.list_items,
-                new String[] { "name", "id" }, new int[] {
+                new String[] { "name", "read" }, new int[] {
                 R.id.app, R.id.count });
         lv2 = (ListView) findViewById(R.id.app_list2);
         lv2.setAdapter(adapter2);
@@ -300,8 +303,20 @@ public class MainActivity extends AppCompatActivity
                 for(int i=0;i<datas.length();i++)
                 {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("app", ((JSONObject)datas.get(i)).get("app"));
-                    map.put("count", ((JSONObject)datas.get(i)).get("count"));
+                    String app = ((JSONObject)datas.get(i)).get("app")+"";
+                 //   ImageView img = (ImageView) findViewById(R.drawable.correct)
+                    if(app.equals("Facebook") || app.equals("LINE")){
+
+                        map.put("check", R.drawable.correct);
+                        map.put("app", ((JSONObject)datas.get(i)).get("app"));
+                        map.put("count", ((JSONObject)datas.get(i)).get("count"));
+                    }
+                    else{
+                        map.put("check", R.drawable.cancel);
+                        map.put("app", ((JSONObject)datas.get(i)).get("app"));
+                        map.put("count", ((JSONObject)datas.get(i)).get("count"));
+                    }
+
                     count_list.add(map);
                 }
             }
@@ -358,7 +373,14 @@ public class MainActivity extends AppCompatActivity
             for(int i=0;i<datas.length();i++)
             {
                 Map<String, Object> map = new HashMap<>();
-                map.put("id", "");
+                Random r = new Random();
+                if(r.nextBoolean()){
+                    map.put("read", "已學習");
+                }
+                else{
+                    map.put("read", "");
+                }
+
                 map.put("name", ((JSONObject)datas.get(i)).get("name"));
                 count_list2.add(map);
             }
